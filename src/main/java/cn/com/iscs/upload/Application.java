@@ -4,38 +4,55 @@ package cn.com.iscs.upload;
  * Created by xuchun on 16/10/21.
  */
 
+import cn.com.iscs.upload.dao.CustomerRepository;
+import cn.com.iscs.upload.entity.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableConfigurationProperties
-@RestController
-@EnableScheduling
 public class Application {
-	final Logger logger = LoggerFactory.getLogger(Application.class);
+	final Logger log = LoggerFactory.getLogger(Application.class);
 
-	@Value("${app.name}")
-	private String appName;
 
-	@Value("${filesClient.authenticationURL}")
-	private String authenticationURL;
+	@Bean
+	public CommandLineRunner demo(CustomerRepository repository) {
+		return (args) -> {
+			// save a couple of customers
+			repository.save(new Customer("Jack", "Bauer"));
+			repository.save(new Customer("Chloe", "O'Brian"));
+			repository.save(new Customer("Kim", "Bauer"));
+			repository.save(new Customer("David", "Palmer"));
+			repository.save(new Customer("Michelle", "Dessler"));
 
-	@RequestMapping("/myenv")
-	public String env(@RequestParam("prop") String prop){
-		return "tiantian";
-	}
+			// fetch all customers
+			log.info("Customers found with findAll():");
+			log.info("-------------------------------");
+			for (Customer customer : repository.findAll()) {
+				log.info(customer.toString());
+			}
+			log.info("");
 
-	@RequestMapping("/")
-	public String welcome(){
-		return "tiantian";
+			// fetch an individual customer by ID
+			Customer customer = repository.findOne(1L);
+			log.info("Customer found with findOne(1L):");
+			log.info("--------------------------------");
+			log.info(customer.toString());
+			log.info("");
+
+			// fetch customers by last name
+			log.info("Customer found with findByLastName('Bauer'):");
+			log.info("--------------------------------------------");
+			for (Customer bauer : repository.findByLastName("Bauer")) {
+				log.info(bauer.toString());
+			}
+			log.info("");
+		};
 	}
 
 
