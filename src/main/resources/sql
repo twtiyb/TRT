@@ -1,0 +1,51 @@
+
+
+
+CREATE TABLE api_back
+(
+  id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  project VARCHAR(200),
+  action VARCHAR(50),
+  method VARCHAR(500),
+  des VARCHAR(500)
+);
+CREATE TABLE api_mobile
+(
+  id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  project VARCHAR(200),
+  action VARCHAR(50),
+  method VARCHAR(50),
+  des VARCHAR(500)
+);
+CREATE TABLE api_web
+(
+  id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  project VARCHAR(200),
+  action VARCHAR(50),
+  method VARCHAR(500),
+  des VARCHAR(500)
+);
+
+
+
+
+SELECT count(DISTINCT b.id),count(DISTINCT m.id),count(DISTINCT w.id)
+FROM api_back b
+  left join api_mobile m  on b.method = m.method
+  left join api_web w on b.method = w.method
+
+
+
+
+--
+
+SELECT *
+FROM api_back b
+left join api_mobile m  on b.method = m.method
+  left join api_web w on b.method = w.method
+where m.method is not null
+  or w.method is not null
+  order by m.id;
+
+SELECT *
+FROM api_web;

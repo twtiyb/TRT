@@ -8,6 +8,8 @@ app:
   name : uploader
   defaultContainer: temp
 
+
+
 filesClient:
   username: testuser:swift
   password: tthksqNaJdS6RvNaOh9p5aTRu5qkMDCLITi7iYFM
@@ -20,5 +22,8 @@ spring:
   jackson:
     default-property-inclusion: non_null
 
-
-
+  datasource:
+    username: root
+    password: 123123
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:32769/xuchun?useUnicode=true&characterEncoding=UTF-8
